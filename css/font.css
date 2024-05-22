@@ -1,0 +1,18 @@
+@font-face {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../font/Lato.ttf) format("ttf"),
+         url(../font/Lato.otf) format("otf"),
+         url(../font/Lato.woff2) format("woff2");
+}
+@font-face {
+    font-family: "Roboto Mono";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(../font/RobotoMono.ttf) format("ttf"),
+         url(../font/RobotoMono.otf) format("otf"),
+         url(../font/RobotoMono.woff2) format("woff2");
+}

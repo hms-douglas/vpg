@@ -1,0 +1,207 @@
+<!-- DECT 2024 -->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#149ED4"></meta>
+    <title>VPG</title>
+    <meta name="description" content="Application to generate video preview banners and thumbnails.">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+    <link rel="shortcut icon" href="img/favicon/favicon.ico" id="favicon">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div id="TOP_BAR">
+        <span id="APP_NAME">V<span>ideo</span>P<span>review</span>G<span>enerator</span></span>
+        
+        <span id="VERSION"></span>
+        
+        <a id="GITHUB"  href="https://github.com/hms-douglas/vpg" target="_blank" rel="noopener noreferrer"></a>
+        <a id="SUPPORT_ME"  href="https://www.paypal.com/donate/?hosted_button_id=L5UZTBX9QYYEG" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+
+    <div id="RESOURCES">
+        <img id="WATERMARK" src="img/watermark.svg">
+        <div id="VIDEOS"></div>
+    </div>
+
+    <div class="page show" id="SELECT_FILES">
+        <div class="scrollable">
+            <div class="full">
+                <div class="utils-center" id="SELECT_CONTAINER">
+                    <div id="INPUT">
+                        <label class="utils-center" id="FILE_INPUT_LABEL">Drag & Drop or click to browse</label>
+                        <input id="INPUT_FILE" type="file" accept="video/*" multiple>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom_credits">
+                <span>
+                    Library: "JSZip" (v3.10.1) by "Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso" available at "<a href="https://github.com/Stuk/jszip" target="_blank" rel="noopener noreferrer">https://github.com/Stuk/jszip</a>". Downloaded on April 15, 2024 under "MIT License".
+                    <br>
+                    <br>
+                    Font: "Lato" by "Łukasz Dziedzic", available at "<a href="https://fonts.google.com/specimen/Lato" target="_blank" rel="noopener noreferrer">https://fonts.google.com/specimen/Lato</a>". Licensed under "Open Font License".
+                    <br>
+                    Font: "Roboto Mono" by "Christian Robertson", available at "<a href="https://fonts.google.com/specimen/Roboto+Mono" target="_blank" rel="noopener noreferrer">https://fonts.google.com/specimen/Roboto+Mono</a>". Licensed under "<a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer">Apache License, Version 2.0</a>".
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <b>No data is collected! No data is shared!</b>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="MAIN">
+        <div id="RESULT">
+            <div id="CARDS"></div>
+
+            <div id="RESULT_BOTTOM">
+                <div id="NAVIGATION">
+                    <div class="btn btn--secondary" id="BTN_PREVIOUS">&lt</div>
+                    <div id="POSITION"></div>
+                    <div class="btn btn--secondary" id="BTN_NEXT">&gt</div>
+                </div>
+
+                <div class="btn" id="BTN_DOWNLOAD">Download</div>
+                <div class="btn btn--secondary" id="BTN_NEW">New</div>
+            </div>
+        </div>
+
+        <div id="SETTINGS">
+            <div class="settings_container">
+                <div class="divisor">Design</div>
+
+                <div class="input color">
+                    <input placeholder="" id="S_D_BACK_C" type="color">
+                    <span class="placeholder">Background color</span>
+                </div>
+
+                <div class="input checkbox">
+                    <div>
+                        <input placeholder="" id="S_D_SHADOW" type="checkbox">
+                        <label class="placeholder" for="S_D_SHADOW">Preview shadow</label>
+                    </div>
+                </div>
+
+                <div class="input color">
+                    <input placeholder="" id="S_D_ABOUT_C" type="color">
+                    <span class="placeholder">About color</span>
+                </div>
+
+                <div class="input">
+                    <input placeholder="" id="S_D_ABOUT_S" type="number" min="1" step="1">
+                    <span class="placeholder">About size</span>
+                </div>
+
+                <div class="input checkbox">
+                    <div>
+                        <input placeholder="" id="S_D_LOGO_C" type="checkbox">
+                        <label class="placeholder" for="S_D_LOGO_C">About color on watermark</label>
+                    </div>
+                </div>
+
+                <div class="input color">
+                    <input placeholder="" id="S_D_TIME_C" type="color">
+                    <span class="placeholder">Timestamp color</span>
+                </div>
+
+                <div class="input">
+                    <input placeholder="" id="S_D_TIME_S" type="number" min="1" step="1">
+                    <span class="placeholder">Timestamp size</span>
+                </div>
+
+                <div class="input radio radio-3-3">
+                    <div>
+                        <input type="radio" name="t_pos" value="TL"/>
+                        <input type="radio" name="t_pos" value="TC"/>
+                        <input type="radio" name="t_pos" value="TR"/>
+                        
+                        <input type="radio" name="t_pos" value="CL"/>
+                        <input type="radio" name="t_pos" value="CC"/>
+                        <input type="radio" name="t_pos" value="CR"/>
+
+                        <input type="radio" name="t_pos" value="BL"/>
+                        <input type="radio" name="t_pos" value="BC"/>
+                        <input type="radio" name="t_pos" value="BR"/>
+                    </div>
+
+                    <span class="placeholder">Timestamp position</span>
+                </div>
+
+                <div class="input checkbox">
+                    <div>
+                        <input placeholder="" id="S_D_TIME_SD" type="checkbox">
+                        <label class="placeholder" for="S_D_TIME_SD">Timestamp shadow</label>
+                    </div>
+                </div>
+
+                <div class="input checkbox">
+                    <div>
+                        <input placeholder="" id="S_D_TIME_M" type="checkbox">
+                        <label class="placeholder" for="S_D_TIME_M">Timestamp miliseconds</label>
+                    </div>
+                </div>
+
+                <div class="divisor">Grid</div>
+
+                <div class="input" data-inputs="2">
+                    <input placeholder="" id="S_G_ROWS" type="number" min="3" step="1">
+                    <span class="placeholder">Rows</span>
+
+                    <input placeholder="" id="S_G_COLUMNS" type="number" min="3" step="1">
+                    <span class="placeholder">Columns</span>
+                </div>
+
+                <div class="input range">
+                    <input placeholder="" id="S_G_SPACE" type="range" min="0" max="50" step="1">
+                    <span class="placeholder">Space between images</span>
+                </div>
+
+                <div class="divisor">Language (Labels)</div>
+
+                <div class="input">
+                    <input placeholder="" id="S_L_NAME">
+                    <span class="placeholder">Label name</span>
+                </div>
+
+                <div class="input">
+                    <input placeholder="" id="S_L_SIZE">
+                    <span class="placeholder">Label file size</span>
+                </div>
+
+                <div class="input">
+                    <input placeholder="" id="S_L_DURATION">
+                    <span class="placeholder">Label duration</span>
+                </div>
+
+                <div class="input">
+                    <input placeholder="" id="S_L_RESOLUTION">
+                    <span class="placeholder">Label resolution</span>
+                </div>
+            </div>
+
+            <div class="settings_btns" data-btns="2">
+                <div class="btn btn--secondary" id="BTN_APPLY">Apply</div>
+                <div class="btn" id="BTN_APPLY_ALL">Apply to all</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup" id="LOADING">
+        <div class="utils-center" id="LOADER">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script src="js/jszip.js" defer></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

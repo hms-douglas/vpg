@@ -1,6 +1,6 @@
 # VideoPreviewGenerator :: VPG
 
-A webapp to help watchface developers creating their images (frames) for publication.
+Application to generate video preview banners and thumbnails
 
 <br/>
 <h2>Webapp</h2>

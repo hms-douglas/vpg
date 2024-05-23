@@ -599,8 +599,8 @@
             return previews;
         }
 
-        static getPreviews() {
-            return UI_Cards.getActive().querySelectorAll(PREFIX_CLASS + CLASS_PREVIEWS + " " + TAG_CANVAS);
+        static getPreviews(index) {
+            return UI_Cards.get(index).querySelectorAll(PREFIX_CLASS + CLASS_PREVIEWS + " " + TAG_CANVAS);
         }
 
         static createEmptyFullPreview() {
@@ -852,7 +852,7 @@
             this.pause();
 
             if(++File._videosLoaded == File._videosToLoad) {
-                Render.renderAll();
+                Render.first();
             }
         }
 
@@ -865,9 +865,9 @@
         static amountToRender = 0;
         static amountRendered = 0;
 
-        static renderAll() {
+        static first() {
             Page.goTo(Page.MAIN, true);
-            
+        
             Popup.show(Popup.LOADING);
 
             let currentIndex = UI_Cards.getActiveIndex();
@@ -890,11 +890,26 @@
             UI_Cards.goTo(currentIndex);
         }
 
+        static renderAll() {
+            Popup.show(Popup.LOADING);
+
+            Render.amountToRender = File.videos.length;
+            Render.amountRendered = 0;
+
+            File.videos.forEach((video, index) => {
+                Render._render(index);
+            });
+        }
+
         static renderCurrent() {
+            Popup.show(Popup.LOADING);
+
             Render.amountToRender = 1;
             Render.amountRendered = 0;
 
             Render._render(UI_Cards.getActiveIndex());
+
+            Popup.hide();
         }
 
         static async _render(index) {
@@ -912,7 +927,7 @@
 
                 previousCanvas.replaceWith(UI_Cards.createFullPreview(canvasPreviews, index));
             } else {
-                previousCanvas.replaceWith(UI_Cards.createFullPreview(UI_Cards.getPreviews(), index));
+                previousCanvas.replaceWith(UI_Cards.createFullPreview(UI_Cards.getPreviews(index), index));
             }
 
             Render._renderingDone();

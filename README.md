@@ -1,6 +1,6 @@
 # VideoPreviewGenerator :: VPG
 
-Application to generate video preview banners and thumbnails
+Webapp to generate video preview banners and thumbnails.
 
 <br/>
 <h2>Webapp</h2>

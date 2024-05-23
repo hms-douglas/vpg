@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-    const VERSION = "1.0.0",
+    const VERSION = "1.0.1",
         PREFIX_CLASS = ".",
         CANVAS_IMAGE_TYPE = "image/png",
         TAG_A = "a",
@@ -31,6 +31,7 @@
         DATASET_NAME = "name",
         DATASET_SIZE = "size",
         DATASET_BTNS = "btns",
+        DATASET_GRID = "grid",
         EL_INPUT_SELECT_FILES = document.getElementById("INPUT_FILE"),
         EL_CONTAINER_VIDEOS = document.getElementById("VIDEOS"),
         EL_LABEL_VERSION = document.getElementById("VERSION"),
@@ -61,24 +62,24 @@
         EL_NAVIGATION = document.getElementById("NAVIGATION"),
         EL_RES_WATERMARK = document.getElementById("WATERMARK"),
         RADIO_NAME_TIME_P = "t_pos",
-        STORAGE_VERSION = "version",
-        STORAGE_LABEL_NAME = "a",
-        STORAGE_LABEL_SIZE = "b",
-        STORAGE_LABEL_DURATION = "c",
-        STORAGE_LABEL_RESOLUTION = "d",
-        STORAGE_GRID_ROWS = "e",
-        STORAGE_GRID_COLUMNS = "f",
-        STORAGE_GRID_SPACE = "g",
-        STORAGE_DESIGN_BACK_C = "h",
-        STORAGE_DESIGN_ABOUT_C = "i",
-        STORAGE_DESIGN_TIME_C = "j",
-        STORAGE_DESIGN_TIME_P = "k",
-        STORAGE_DESIGN_TIME_S = "l",
-        STORAGE_DESIGN_TIME_SD = "m",
-        STORAGE_DESIGN_TIME_M = "n",
-        STORAGE_DESIGN_ABOUT_S = "o",
-        STORAGE_DESIGN_SHADOW = "p",
-        STORAGE_DESIGN_WATERMARK_AC = "q";
+        STORAGE_VERSION = "VPG_version",
+        STORAGE_LABEL_NAME = "VPG_a",
+        STORAGE_LABEL_SIZE = "VPG_b",
+        STORAGE_LABEL_DURATION = "VPG_c",
+        STORAGE_LABEL_RESOLUTION = "VPG_d",
+        STORAGE_GRID_ROWS = "VPG_e",
+        STORAGE_GRID_COLUMNS = "VPG_f",
+        STORAGE_GRID_SPACE = "VPG_g",
+        STORAGE_DESIGN_BACK_C = "VPG_h",
+        STORAGE_DESIGN_ABOUT_C = "VPG_i",
+        STORAGE_DESIGN_TIME_C = "VPG_j",
+        STORAGE_DESIGN_TIME_P = "VPG_k",
+        STORAGE_DESIGN_TIME_S = "VPG_l",
+        STORAGE_DESIGN_TIME_SD = "VPG_m",
+        STORAGE_DESIGN_TIME_M = "VPG_n",
+        STORAGE_DESIGN_ABOUT_S = "VPG_o",
+        STORAGE_DESIGN_SHADOW = "VPG_p",
+        STORAGE_DESIGN_WATERMARK_AC = "VPG_q";
 
     window.onload = () => {
         App.initListeners();
@@ -87,7 +88,7 @@
 
         Settings.init();
 
-        App.registerServiceWorker();
+        //App.registerServiceWorker();
     };
 
     class App {
@@ -215,6 +216,10 @@
             static space;
 
             static _COLUMN_WIDTH = 300;
+
+            static getGridString() {
+                return Settings.Grid.rows + "x" + Settings.Grid.columns;
+            }
         };
 
         static Design = class {
@@ -406,7 +411,7 @@
 
             const folder = zip.folder(Download._FOLDER_PREVIEW_NAME);
 
-            selecteds.forEach((canvas, index) => {
+            selecteds.forEach((canvas) => {
                 folder.file(Download._PREFIX_FILE + Download._FILE_SPACE_SEPARATOR + Utils.formatTimestamp(canvas.dataset[DATASET_TIMESTAMP]).replaceAll(":", "-") + Download._EXTENSION_IMAGE, Utils.getDataUrl(canvas), {base64 : true});
             });
         
@@ -495,7 +500,6 @@
             const active = UI_Cards.getActive();
             
             return active === null ? -1 : Number(UI_Cards.getActive().dataset[DATASET_INDEX]);
-
         }
 
         static getAllSelectedActive() {
@@ -585,7 +589,7 @@
 
             canvasPreview.forEach((canvas) => {
                 const container = document.createElement(TAG_DIV);
-                    container.addEventListener(EVENT_CLICK, () => container.classList.toggle(CLASS_SELECTED));
+                      container.addEventListener(EVENT_CLICK, () => container.classList.toggle(CLASS_SELECTED));
 
                 container.appendChild(canvas);
 
@@ -595,10 +599,14 @@
             return previews;
         }
 
+        static getPreviews() {
+            return UI_Cards.getActive().querySelectorAll(PREFIX_CLASS + CLASS_PREVIEWS + " " + TAG_CANVAS);
+        }
+
         static createEmptyFullPreview() {
             const canvas = document.createElement(TAG_CANVAS);
-                canvas.classList.add(CLASS_PREVIEW);
-                canvas.classList.add(CLASS_PREVIEW_FULL);
+                  canvas.classList.add(CLASS_PREVIEW);
+                  canvas.classList.add(CLASS_PREVIEW_FULL);
 
             return canvas;
         }
@@ -609,8 +617,9 @@
             const aboutHeight = (Settings.Design.About._MARGIN * 2) + ((Settings.Design.About.size + Settings.Design.About._SPACE_LINE) * (Settings.Language._AMOUNT));
 
             const canvas = UI_Cards.createEmptyFullPreview();
-                canvas.width = ((Settings.Grid._COLUMN_WIDTH + Settings.Grid.space) * Settings.Grid.columns) + Settings.Grid.space;
-                canvas.height = ((previewHeight + Settings.Grid.space) * Settings.Grid.rows) + aboutHeight;
+                  canvas.width = ((Settings.Grid._COLUMN_WIDTH + Settings.Grid.space) * Settings.Grid.columns) + Settings.Grid.space;
+                  canvas.height = ((previewHeight + Settings.Grid.space) * Settings.Grid.rows) + aboutHeight;
+                  canvas.dataset[DATASET_GRID] = Settings.Grid.getGridString();
 
             const ctx = canvas.getContext("2d");
 
@@ -624,8 +633,7 @@
             ctx.textBaseline = "top";
 
             const logoHeight = aboutHeight - Settings.Design.About._MARGIN,
-                logoWidth = Utils.getWidthForHeight(EL_RES_WATERMARK.naturalWidth, EL_RES_WATERMARK.naturalHeight, logoHeight);
-
+                  logoWidth = Utils.getWidthForHeight(EL_RES_WATERMARK.naturalWidth, EL_RES_WATERMARK.naturalHeight, logoHeight);
 
             if(Settings.Design.showAboutColorOnWatermark) {
                 const canvasWatermark = document.createElement(TAG_CANVAS);
@@ -657,8 +665,6 @@
                     logoHeight
                 );
             }
-
-            
 
             const l = Utils.getSizeLongestLanguage() + Settings.Design.About._SPACE;
 
@@ -892,22 +898,27 @@
         }
 
         static async _render(index) {
-            const card = UI_Cards.get(index);
+            const card = UI_Cards.get(index),
+                  previousCanvas = card.querySelector(PREFIX_CLASS + CLASS_PREVIEW_FULL);
 
-            const previewsContainer = card.querySelector(PREFIX_CLASS + CLASS_PREVIEWS);
+            if(previousCanvas.dataset[DATASET_GRID] !== Settings.Grid.getGridString()) {
+                const previewsContainer = card.querySelector(PREFIX_CLASS + CLASS_PREVIEWS);
 
-            previewsContainer.innerHTML = "";
+                previewsContainer.innerHTML = "";
+    
+                const canvasPreviews = await Render._getNewPreviews(File.videos[index]);
+    
+                UI_Cards.createPreviews(canvasPreviews).forEach((preview) => previewsContainer.appendChild(preview));
 
-            const canvasPreviews = await Render._getPreviews(File.videos[index]);
-
-            UI_Cards.createPreviews(canvasPreviews).forEach((preview) => previewsContainer.appendChild(preview));
-
-            card.querySelector(PREFIX_CLASS + CLASS_PREVIEW_FULL).replaceWith(UI_Cards.createFullPreview(canvasPreviews, index));
+                previousCanvas.replaceWith(UI_Cards.createFullPreview(canvasPreviews, index));
+            } else {
+                previousCanvas.replaceWith(UI_Cards.createFullPreview(UI_Cards.getPreviews(), index));
+            }
 
             Render._renderingDone();
         }
 
-        static async _getPreviews(video) {
+        static async _getNewPreviews(video) {
             const amount = (Settings.Grid.rows * Settings.Grid.columns),
                   skipTime = (video.duration / amount) + ((video.duration / amount) / amount);
 

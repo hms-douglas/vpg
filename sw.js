@@ -1,7 +1,7 @@
 "use strict";
 
 (function() {
-    const CACHE_VERSION = "v1";
+    const CACHE_VERSION = "vpg_v2";
 
     const FILES_TO_BE_CACHED = [
         "index.html",
@@ -39,7 +39,7 @@
             caches.keys().then(function(cacheVersions) {
                 return Promise.all(
                     cacheVersions.map(function(cache) {
-                        if(cache !== CACHE_VERSION) {
+                        if(cache !== CACHE_VERSION && cache.startsWith("vpg")) {
                             return caches.delete(cache);
                         }
                     })

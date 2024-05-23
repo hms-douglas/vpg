@@ -606,6 +606,9 @@ body {
 input[type="radio"] {
     accent-color: var(--c_main);
 }
+.input input[type="number"] {
+    font-family: "Roboto mono", "Lato";
+}
 [data-inputs] input {
     display: inline-block;
     margin-left: var(--d_btn-space);

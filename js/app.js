@@ -88,7 +88,7 @@
 
         Settings.init();
 
-        //App.registerServiceWorker();
+        App.registerServiceWorker();
     };
 
     class App {
